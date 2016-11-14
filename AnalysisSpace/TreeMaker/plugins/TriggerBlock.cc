@@ -8,20 +8,30 @@
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
 #include "AnalysisSpace/TreeMaker/plugins/TriggerBlock.h"
 #include "AnalysisSpace/TreeMaker/interface/Utility.h"
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
+#include "FWCore/Common/interface/TriggerNames.h"
 
 static const unsigned int NmaxL1AlgoBit = 128;
 static const unsigned int NmaxL1TechBit = 64;
 
 // Constructor
 TriggerBlock::TriggerBlock(const edm::ParameterSet& iConfig) :
-  verbosity_(iConfig.getUntrackedParameter<int>("verbosity", 0)),
-  l1Tag_(iConfig.getUntrackedParameter<edm::InputTag>("l1InputTag", edm::InputTag("gtDigis"))),
-  hltTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltInputTag", edm::InputTag("TriggerResults","","HLT"))),
+  verbosity_(iConfig.getUntrackedParameter<int>("verbosity", 1)),
+//  l1Tag_(iConfig.getUntrackedParameter<edm::InputTag>("l1InputTag", edm::InputTag("gtDigis"))),
+  preScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1PreScaleInputTag", edm::InputTag("patTrigger", ""))),
+  l1minpreScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1minPreScaleInputTag", edm::InputTag("patTrigger", "l1min"))),
+  l1maxpreScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1maxPreScaleInputTag", edm::InputTag("patTrigger", "l1max"))),
+  hltTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltInputTag", edm::InputTag("TriggerResults","","HLT2"))),
   hltPathsOfInterest_(iConfig.getParameter<std::vector<std::string> >("hltPathsOfInterest")),
-  l1Token_(consumes<L1GlobalTriggerReadoutRecord>(l1Tag_)),
-  hltToken_(consumes<edm::TriggerResults>(hltTag_))
+//  l1Token_(consumes<L1GlobalTriggerReadoutRecord>(l1Tag_)),
+  preScaleToken_(consumes<pat::PackedTriggerPrescales>(preScaleTag_)),
+  l1minpreScaleToken_(consumes<pat::PackedTriggerPrescales>(l1minpreScaleTag_)),
+  l1maxpreScaleToken_(consumes<pat::PackedTriggerPrescales>(l1maxpreScaleTag_)),
+  hltToken_(consumes<edm::TriggerResults>(hltTag_)),
+  hltPrescaleProvider_(iConfig, consumesCollector(), *this)
 {
 }
 TriggerBlock::~TriggerBlock() {
@@ -30,6 +40,8 @@ TriggerBlock::~TriggerBlock() {
   delete hltpaths_;
   delete hltresults_;
   delete hltprescales_;
+  delete l1minprescales_;
+  delete l1maxprescales_;
 }
 void TriggerBlock::beginJob()
 {
@@ -50,6 +62,11 @@ void TriggerBlock::beginJob()
 
   hltprescales_ = new std::vector<int>();
   tree->Branch("hltprescales", "vector<int>", &hltprescales_);
+
+  l1minprescales_ = new std::vector<int>();
+  tree->Branch("l1minprescales", "vector<int>", &l1minprescales_);
+  l1maxprescales_ = new std::vector<int>();
+  tree->Branch("l1maxprescales", "vector<int>", &l1maxprescales_);
 }
 void TriggerBlock::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup) {
   bool changed = true;
@@ -65,6 +82,8 @@ void TriggerBlock::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup)
                                   << hltTag_.process() << " failed";
     // In this case, all access methods will return empty values!
   }
+  bool isChanged = true;
+  hltPrescaleProvider_.init(iRun, iSetup, "HLT", isChanged);
 }
 void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   // Reset the vectors
@@ -73,7 +92,9 @@ void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   hltpaths_->clear();
   hltresults_->clear();
   hltprescales_->clear();
-
+  l1minprescales_->clear();
+  l1maxprescales_->clear();
+/*
   edm::Handle<L1GlobalTriggerReadoutRecord> l1GtReadoutRecord;
   bool found = iEvent.getByToken(l1Token_, l1GtReadoutRecord);
 
@@ -91,8 +112,19 @@ void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     edm::LogError("TriggerBlock") << "Error >> Failed to get L1GlobalTriggerReadoutRecord for label: "
                                   << l1Tag_;
   }
+*/
+  //New way of having prescale
+  edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
+  iEvent.getByToken(preScaleToken_, triggerPrescales);
+
+  edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesl1min;
+  iEvent.getByToken(l1minpreScaleToken_, triggerPrescalesl1min);
+
+  edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesl1max;
+  iEvent.getByToken(l1maxpreScaleToken_, triggerPrescalesl1max);
+
   edm::Handle<edm::TriggerResults> triggerResults;
-  found = iEvent.getByToken(hltToken_, triggerResults);
+  bool found = iEvent.getByToken(hltToken_, triggerResults);
   if (found && triggerResults.isValid()) {
     edm::LogInfo("TriggerBlock") << "Successfully obtained " << hltTag_;
     const std::vector<std::string>& pathList = hltConfig_.triggerNames();
@@ -107,27 +139,40 @@ void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       hltpaths_->push_back(path);
 
       int fired = -1;
+      int prescale = -1;
+      int prescale_l1min = -1;
+      int prescale_l1max = -1;
       unsigned int index = hltConfig_.triggerIndex(path);
       if (index < triggerResults->size()) {
-        fired = (triggerResults->accept(index)) ? 1 : 0;
+        fired    = (triggerResults->accept(index)) ? 1 : 0;
+        prescale = triggerPrescales->getPrescaleForIndex(index);
+        prescale_l1min = triggerPrescalesl1min->getPrescaleForIndex(index);
+        prescale_l1max = triggerPrescalesl1max->getPrescaleForIndex(index);
       }
       else {
         edm::LogInfo("TriggerBlock") << "Requested HLT path \"" << path << "\" does not exist";
       }
       hltresults_->push_back(fired);
-
+      hltprescales_->push_back(prescale);
+      l1minprescales_->push_back(prescale_l1min);
+      l1maxprescales_->push_back(prescale_l1max);
+/*
       int prescale = -1;
-      if (hltConfig_.prescaleSet(iEvent, iSetup) < 0) {
-        edm::LogError("TriggerBlock") << "The prescale set index number could not be obtained for HLT path: "
+
+      if (hltPrescaleProvider_.prescaleSet(iEvent, iSetup) < 0) {
+//        edm::LogError("TriggerBlock") << "The prescale set index number could not be obtained for HLT path: "
+        edm::LogInfo("TriggerBlock") << "The prescale set index number could not be obtained for HLT path: "
                                       << path;
       }
       else {
-        prescale = hltConfig_.prescaleValue(iEvent, iSetup, path);
+      auto a = hltPrescaleProvider_.prescaleValuesInDetail(iEvent, iSetup, path);
+      prescale = a.second;
       }
       hltprescales_->push_back(prescale);
 
 //      auto a = hltConfig_.prescaleValues(iEvent, iSetup, path);
-      auto a = hltConfig_.prescaleValuesInDetail(iEvent, iSetup, path);
+      auto a = hltPrescaleProvider_.prescaleValuesInDetail(iEvent, iSetup, path);
+*/
       if (verbosity_) {
 #if 0
         std::cout << ">>> Path: " << (path) 

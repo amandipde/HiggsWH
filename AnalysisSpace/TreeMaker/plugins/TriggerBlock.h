@@ -17,6 +17,11 @@
 #include "FWCore/ParameterSet/interface/ProcessDesc.h"
 
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
 class TriggerBlock : public edm::EDAnalyzer
 {
@@ -35,6 +40,9 @@ private:
   const int verbosity_;
 
   const edm::InputTag l1Tag_;
+  const edm::InputTag preScaleTag_;
+  const edm::InputTag l1minpreScaleTag_;
+  const edm::InputTag l1maxpreScaleTag_;
   const edm::InputTag hltTag_;
   const std::vector<std::string> hltPathsOfInterest_;
   HLTConfigProvider hltConfig_;
@@ -44,8 +52,14 @@ private:
   std::vector<std::string>* hltpaths_;
   std::vector<int>* hltresults_;
   std::vector<int>* hltprescales_;
+  std::vector<int>* l1minprescales_;
+  std::vector<int>* l1maxprescales_;
 
   const edm::EDGetTokenT<L1GlobalTriggerReadoutRecord> l1Token_;
+  const edm::EDGetTokenT<pat::PackedTriggerPrescales> preScaleToken_;
+  const edm::EDGetTokenT<pat::PackedTriggerPrescales> l1minpreScaleToken_;
+  const edm::EDGetTokenT<pat::PackedTriggerPrescales> l1maxpreScaleToken_;
   const edm::EDGetTokenT<edm::TriggerResults> hltToken_;
+  HLTPrescaleProvider hltPrescaleProvider_;
 };
 #endif

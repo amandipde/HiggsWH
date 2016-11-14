@@ -11,7 +11,8 @@ HLTEventAnalyzer::HLTEventAnalyzer(const edm::ParameterSet& ps) :
   processName_(ps.getParameter<std::string>("processName")),
   triggerName_(ps.getParameter<std::string>("triggerName")),
   triggerResultsTag_(ps.getParameter<edm::InputTag>("triggerResults")),
-  triggerEventTag_(ps.getParameter<edm::InputTag>("triggerEvent"))
+  triggerEventTag_(ps.getParameter<edm::InputTag>("triggerEvent")),
+  hltPrescaleProvider_(ps, consumesCollector(), *this)
 {
   _srcTriggerResultsToken = consumes<edm::TriggerResults>(triggerResultsTag_);
   _srcTriggerEventToken = consumes<trigger::TriggerEvent>(triggerEventTag_);
@@ -58,6 +59,8 @@ void HLTEventAnalyzer::beginRun(edm::Run const & iRun, edm::EventSetup const& iS
 	 << " config extraction failure with process name "
 	 << processName_ << endl;
   }
+  bool isChanged = true;
+  hltPrescaleProvider_.init(iRun, iSetup, "HLT", isChanged);
 }
 void HLTEventAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
@@ -106,7 +109,7 @@ void HLTEventAnalyzer::analyzeTrigger(const edm::Event& iEvent, const edm::Event
     return;
   }
    
-  const std::pair<int,int> prescales(hltConfig_.prescaleValues(iEvent,iSetup,triggerName));
+  const std::pair<int,int> prescales(hltPrescaleProvider_.prescaleValues(iEvent,iSetup,triggerName));
   cout << "HLTEventAnalyzer::analyzeTrigger: path "
        << triggerName << " [" << triggerIndex << "] "
        << "prescales L1T,HLT: " << prescales.first << "," << prescales.second

@@ -1,0 +1,54 @@
+#ifndef __SelectionEfficiency__HH
+#define __SelectionEfficiency__HH
+
+#include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include "TLorentzVector.h"
+#include "TVector.h"
+#include "TProfile.h"
+
+#include "PhysicsObjects.h"
+#include "AnaBase.h"
+
+using namespace vhtm;
+
+class SelectionEfficiency : public AnaBase {
+    
+public:
+
+  SelectionEfficiency();
+  virtual ~SelectionEfficiency();
+    
+  void eventLoop();  // the main analysis 
+  bool beginJob();
+  void endJob();
+  void selectEvent();
+
+  bool readJob(const std::string& jobFile, int& nFiles);
+  void printJob(std::ostream& os=std::cout) const;
+  
+  void clearLists();
+
+  virtual void bookHistograms();
+  void study_eff();
+
+public:
+
+  std::vector<vhtm::Vertex> vtxList;
+  std::vector<vhtm::Muon> muoList;
+  std::vector<vhtm::Electron> eleList;
+  std::vector<vhtm::Tau> tauList;
+  std::vector<vhtm::Jet> bjetList;
+
+  std::vector<vhtm::GenParticle> genMuonList;
+  std::vector<vhtm::GenParticle> genTauList;
+
+public:
+  std::map<std::string, double> _tau1CutMap;
+  std::map<std::string, double> _tau2CutMap;
+};
+#endif

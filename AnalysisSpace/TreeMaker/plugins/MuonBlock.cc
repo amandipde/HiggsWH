@@ -66,12 +66,14 @@ void MuonBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       }
       // consider only global muons
       if (!v.isGlobalMuon()) continue;
-      reco::TrackRef tk  = v.innerTrack(); // tracker segment only
+      reco::TrackRef tk  = v.muonBestTrack(); // tracker segment only
+      //reco::TrackRef tk  = v.innerTrack(); // tracker segment only
       reco::TrackRef gtk = v.globalTrack();
 
       vhtm::Muon muon;
       muon.isTrackerMuon = v.isTrackerMuon() ? true : false;
       muon.isPFMuon      = v.isPFMuon();
+
 
       muon.eta     = v.eta();
       muon.phi     = v.phi();
@@ -95,6 +97,7 @@ void MuonBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       muon.trkDz      = trkdz;
       //Gives normalized Chi2 of the global track
       muon.globalChi2 = v.normChi2();
+
       muon.passID     = (v.muonID(muonID_)) ? true : false;
 
       double dxyWrtPV = -99.;

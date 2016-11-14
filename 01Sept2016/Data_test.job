@@ -1,0 +1,33 @@
+START
+dataType data
+readTrk  0
+readTrigObject 0
+readMVA 0
+readMVAFK 0
+MVAdisFile MLP.weights.xml
+MVAFKdisFile WH_BDT8.weights.xml
+createMVATree 0
+puHistFile reweightFunctionFall12.root
+usePUWt 0
+useTrueNInt 0
+histFile  test.root
+logFile   test.out
+eventFile test_events.out
+mvaInputFile test_mva.root
+logOption 0
+maxEvent  -1
+vtxCutList ndf=7 dxy=2 z=24
+muonCutList eta=2.1 pt=18 nChambers=2 nMatches=2 nMatchedStations=2 ptTag=24 ptProbe=10
+muonCutList pixHits=1 trkHits=8 globalChi2=10.0 trkD0=0.02 dB=0.02 vtxDistZ=0.2 dz=0.2 pfRelIso=0.1
+electronCutList pt=10.0 eta=2.5 missingHits=1 dB=0.02 dz=0.2
+electronCutList etaLow=1.4442 etaUp=1.566 scEtaLow=1.4442 scEtaUp=1.566 eleId=7
+tauCutList eta=2.3 pt=10 dz=0.2 muVeto=0.5 eleVeto=0.5
+bjetCutList eta=2.4 pt=20 useTCHE=0 TCHECut=3.3 CSVCut=0.898
+evselCutList ptMuon=24 drMuTau=0.1 drTauTau=0.1 ptTau1=25 ptTau2=20 muVetoPt=15
+evselCutList dzMuTauVtx=0.14 dzTauTauVtx=0.14 dzEleTauVtx=0.14 muTauMass=80 tauPairPt=50
+tau1CutList drMuTau=0.1 eta=2.3 pt=25 dz=0.2
+tau2CutList drMuTau=0.1 drTauTau=0.1 eta=2.3 pt=20 dz=0.2
+useTrigger 1
+trigPathList HLT_IsoMu18
+inputFile /lustre/cms/store/user/amodak/PerugiaData/2016/SingleMuon/crab_Run2016B_v2_SingleMuon/160806_002849/0001/SingleMuon_2016B_v2_1412.root
+END

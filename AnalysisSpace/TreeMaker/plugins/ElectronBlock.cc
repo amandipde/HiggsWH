@@ -261,6 +261,7 @@ void ElectronBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       electron.isPassTight_MVAIDWP80 = v.userInt("isPassTight_MVAIDWP80"); 
       electron.mvaId = v.userFloat("mvaId"); 
       electron.mvaId_def = v.userFloat("mvaId_def"); 
+
       list_->push_back(electron);
     }
     fnElectron_ = list_->size();

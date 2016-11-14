@@ -12,7 +12,6 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
-process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 #--------------------------------------
@@ -34,15 +33,14 @@ process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 #-----------------------------
 # Magnetic Field
 #-----------------------------
-process.load('Configuration.StandardSequences.MagneticField_38T_cff')
-
+process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 
 #=============================================================
 #-------------
 # Global Tag
 #-------------
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-process.GlobalTag.globaltag = '74X_dataRun2_reMiniAOD_v0'
+process.GlobalTag.globaltag = '80X_dataRun2_Prompt_ICHEP16JEC_v0'
 
 #--------------------------------------------------
 # Analysis Tree Specific
@@ -55,7 +53,7 @@ process.load("AnalysisSpace.TreeMaker.TreeContentConfig_data_cff")
 #
 # Set up electron ID (VID framework)
 #
-
+from RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff import *
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 # turn on VID producer, indicate data format  to be
 # DataFormat.AOD or DataFormat.MiniAOD, as appropriate 
@@ -75,8 +73,8 @@ for idmod in my_id_modules:
 process.UserElectron = cms.EDProducer('ElectronsUserEmbedder',
   beamSpotCorr = cms.untracked.bool(True),
   offlineBeamSpot = cms.untracked.InputTag('offlineBeamSpot'),
-  #vertexSrc = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
-  vertexSrc = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+  vertexSrc = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
+  #vertexSrc = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
   electronSrc = cms.untracked.InputTag('slimmedElectrons'),
   eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
   eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
@@ -87,9 +85,15 @@ process.UserElectron = cms.EDProducer('ElectronsUserEmbedder',
 process.UserMuon = cms.EDProducer('MuonsUserEmbedder',
   beamSpotCorr = cms.untracked.bool(True),
   offlineBeamSpot = cms.untracked.InputTag('offlineBeamSpot'),
-# vertexSrc = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
-  vertexSrc = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
+  vertexSrc = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
+  #vertexSrc = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
   muonSrc = cms.untracked.InputTag('slimmedMuons'),
+)
+
+process.goodOfflinePrimaryVertices = cms.EDFilter("VertexSelector",
+  src = cms.InputTag('offlineSlimmedPrimaryVertices'),
+  cut = cms.string("!isFake && ndof > 4 && abs(z) <= 24 && abs(position.Rho) <= 2"),
+  filter = cms.bool(True)                                          
 )
 #############################################################################
 #Prepare lepton collections for MVA MET 
@@ -111,12 +115,13 @@ process.TausForMVAMet = cms.EDFilter('PATTauSelector',
 )
 
 process.p = cms.Path(
+  process.goodOfflinePrimaryVertices*
   process.egmGsfElectronIDSequence*
   process.UserElectron*
   process.UserMuon*
-  process.ElectronsForMVAMet*
-  process.MuonsForMVAMet*
-  process.TausForMVAMet*
+#  process.ElectronsForMVAMet*
+#  process.MuonsForMVAMet*
+#  process.TausForMVAMet*
   process.treeCreator*
   process.treeContentSequence*
   process.treeWriter
@@ -126,6 +131,6 @@ process.p = cms.Path(
 # Output ROOT file
 #-------------
 process.TFileService = cms.Service("TFileService",
-   fileName = cms.string('SingleElectron_Run2015D_v4_25ns_MiniAOD.root')
+   fileName = cms.string('SingleElectron_2016B_v2.root')
 )
 

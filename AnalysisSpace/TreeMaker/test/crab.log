@@ -1,0 +1,208 @@
+DEBUG 2016-08-06 02:20:20,671: 	 Executing command: 'checkwrite'
+DEBUG 2016-08-06 02:20:20,672: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+ERROR 2016-08-06 02:20:20,693: 	 Error: Please specify the site where to check the write permissions. Use the --site option.
+ERROR 2016-08-06 02:20:20,693: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/checkwrite.py", line 22, in __init__
+    SubCommand.__init__(self, logger, cmdargs)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 257, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/checkwrite.py", line 249, in validateOptions
+    raise ex
+MissingOptionException: [91mError[0m: Please specify the site where to check the write permissions. Use the --site option.
+DEBUG 2016-08-06 02:20:42,270: 	 Executing command: 'checkwrite'
+DEBUG 2016-08-06 02:20:42,270: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+DEBUG 2016-08-06 02:20:42,276: 	 Checking credentials
+DEBUG 2016-08-06 02:20:42,276: 	 Proxy file /tmp/x509up_u28237 not found
+DEBUG 2016-08-06 02:20:42,276: 	 Creating new proxy for 24:00 hours with VO group '' and VO role 'NULL'.
+DEBUG 2016-08-06 02:20:50,705: 	 Executing : 
+ command : voms-proxy-init -voms cms:/cms -valid 24:00 -rfc
+ output : None
+ error: None
+ retcode : 0
+DEBUG 2016-08-06 02:20:51,814: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -timeleft
+ output : 86398
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:52,327: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -actimeleft
+ output : 86397
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:52,831: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u28237 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:52,832: 	 Proxy created.
+DEBUG 2016-08-06 02:20:52,940: 	 Executing : 
+ command : openssl x509 -in ~/.globus/usercert.pem -subject -noout
+ output : subject= /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=amodak/CN=731050/CN=Atanu Modak
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:52,940: 	 Checking credentials
+DEBUG 2016-08-06 02:20:52,940: 	 Found proxy file /tmp/x509up_u28237
+DEBUG 2016-08-06 02:20:52,940: 	 Getting proxy life time left
+DEBUG 2016-08-06 02:20:53,446: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -timeleft
+ output : 86396
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:53,952: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -actimeleft
+ output : 86396
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:53,952: 	 Proxy valid for 23:59:56 hours
+DEBUG 2016-08-06 02:20:54,456: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u28237 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2016-08-06 02:20:54,456: 	 Command use: checkwrite
+DEBUG 2016-08-06 02:20:54,456: 	 Options use: ['--site=T2_IT_Bari']
+DEBUG 2016-08-06 02:20:54,456: 	 Instance is None
+DEBUG 2016-08-06 02:20:54,456: 	 Server base url is None
+DEBUG 2016-08-06 02:20:54,478: 	 Service initialised ({'endpoint': 'https://cmsweb.cern.ch/phedex/datasvc/json/prod/', 'key': '/tmp/x509up_u28237', 'maxcachereuse': 24.0, 'cachepath': '/tmp/amodak/.wmcore_cache_fQ8U6p/cmsweb.cern.ch', 'inputdata': {}, 'cert': '/tmp/x509up_u28237', 'timeout': 300, 'service_name': 'PhEDEx', 'requests': {'content_type': 'application/x-www-form-urlencoded', 'cacheduration': 0, 'host': 'https://cmsweb.cern.ch/phedex/datasvc/json/prod/', 'accept_type': 'text/html', 'key': '/tmp/x509up_u28237', 'deleteCacheOnExit': <WMCore.Services.Requests.TempDirectory instance at 0x7f365c081cf8>, 'endpoint_components': ParseResult(scheme='https', netloc='cmsweb.cern.ch', path='/phedex/datasvc/json/prod/', params='', query='', fragment=''), 'endpoint': 'https://cmsweb.cern.ch/phedex/datasvc/json/prod/', 'pycurl': True, 'cachepath': '/tmp/amodak/.wmcore_cache_fQ8U6p/cmsweb.cern.ch', 'cert': '/tmp/x509up_u28237', 'timeout': 300, 'req_cache_path': '/tmp/amodak/.wmcore_cache_fQ8U6p/cmsweb.cern.ch/.cache', 'logger': <logging.Logger object at 0x7f365c066850>}, 'logger': <logging.Logger object at 0x7f365c066850>, 'cacheduration': 0, 'method': None, 'pycurl': True}):
+	 host: cmsweb.cern.ch, basepath: https://cmsweb.cern.ch/phedex/datasvc/json/prod/ (text/html)
+	 cache: /tmp/amodak/.wmcore_cache_fQ8U6p/cmsweb.cern.ch (duration 0 hours, max reuse 24.0 hours)
+INFO 2016-08-06 02:20:54,478: 	 Will check write permission in the default location /store/user/<username>
+INFO 2016-08-06 02:20:54,478: 	 Retrieving DN from proxy...
+INFO 2016-08-06 02:20:55,660: 	 DN is: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=amodak/CN=731050/CN=Atanu Modak
+INFO 2016-08-06 02:20:55,660: 	 Retrieving username from SiteDB...
+INFO 2016-08-06 02:20:58,033: 	 Username is: amodak
+INFO 2016-08-06 02:20:58,033: 	 Validating LFN /store/user/amodak...
+INFO 2016-08-06 02:20:58,033: 	 LFN /store/user/amodak is valid.
+INFO 2016-08-06 02:20:58,071: 	 Will use `gfal-copy`, `gfal-rm` commands for checking write permissions
+INFO 2016-08-06 02:20:58,072: 	 Will check write permission in /store/user/amodak on site T2_IT_Bari
+DEBUG 2016-08-06 02:20:58,074: 	 getData: 
+	url: lfn2pfn
+	data: {'node': ['T2_IT_Bari'], 'custodial': 'n', 'lfn': ['/store/user/amodak/crab3checkwrite_20160806_022058/crab3checkwrite_20160806_022058.tmp'], 'protocol': 'srmv2'}
+INFO 2016-08-06 02:20:58,420: 	 
+Attempting to create (dummy) directory crab3checkwrite_20160806_022058 and copy (dummy) file crab3checkwrite_20160806_022058.tmp to /store/user/amodak
+
+INFO 2016-08-06 02:20:58,423: 	 Executing command: env -i X509_USER_PROXY=/tmp/x509up_u28237 gfal-copy -p -v -t 180 file:///afs/cern.ch/work/a/amodak/public/HiggsWHRun2/CMSSW_8_0_8_patch1/src/AnalysisSpace/TreeMaker/test/crab3checkwrite_20160806_022058.tmp 'srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/crab3checkwrite_20160806_022058.tmp'
+INFO 2016-08-06 02:20:58,423: 	 Please wait...
+INFO 2016-08-06 02:21:02,366: 	 
+Successfully created directory crab3checkwrite_20160806_022058 and copied file crab3checkwrite_20160806_022058.tmp to /store/user/amodak
+INFO 2016-08-06 02:21:02,366: 	 
+Attempting to delete file srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/crab3checkwrite_20160806_022058.tmp
+
+INFO 2016-08-06 02:21:02,366: 	 Executing command: env -i X509_USER_PROXY=/tmp/x509up_u28237 gfal-rm -v -t 180 'srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/crab3checkwrite_20160806_022058.tmp'
+INFO 2016-08-06 02:21:02,367: 	 Please wait...
+INFO 2016-08-06 02:21:02,650: 	 
+Successfully deleted file srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/crab3checkwrite_20160806_022058.tmp
+INFO 2016-08-06 02:21:02,650: 	 
+Attempting to delete directory srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/
+
+INFO 2016-08-06 02:21:02,650: 	 Executing command: env -i X509_USER_PROXY=/tmp/x509up_u28237 gfal-rm -r -v -t 180 'srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/'
+INFO 2016-08-06 02:21:02,650: 	 Please wait...
+INFO 2016-08-06 02:21:03,089: 	 
+Successfully deleted directory srm://storm-se-01.ba.infn.it:8444/srm/managerv2?SFN=//cms/store/user/amodak/crab3checkwrite_20160806_022058/
+INFO 2016-08-06 02:21:03,154: 	 
+Checkwrite Result:
+INFO 2016-08-06 02:21:03,154: 	 Success: Able to write in /store/user/amodak on site T2_IT_Bari
+DEBUG 2016-08-06 02:39:04,676: 	 Executing command: 'status'
+DEBUG 2016-08-06 02:39:04,677: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+DEBUG 2016-08-06 02:39:23,258: 	 Executing command: 'status'
+DEBUG 2016-08-06 02:39:23,259: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+ERROR 2016-08-06 02:39:23,260: 	 Error: /crab_DATA_2016/crab_Run2016B_v2_SingleMuon/crab.log is not a valid CRAB project directory.
+ERROR 2016-08-06 02:39:23,260: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 257, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/status.py", line 749, in validateOptions
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 566, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: /crab_DATA_2016/crab_Run2016B_v2_SingleMuon/crab.log is not a valid CRAB project directory.
+DEBUG 2016-08-06 02:39:44,189: 	 Executing command: 'status'
+DEBUG 2016-08-06 02:39:44,189: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+ERROR 2016-08-06 02:39:44,189: 	 Error: /crab_DATA_2016/crab_Run2016B_v2_SingleMuon/ is not a valid CRAB project directory.
+ERROR 2016-08-06 02:39:44,190: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 257, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/status.py", line 749, in validateOptions
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 566, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: /crab_DATA_2016/crab_Run2016B_v2_SingleMuon/ is not a valid CRAB project directory.
+DEBUG 2016-08-06 02:39:58,160: 	 Executing command: 'status'
+DEBUG 2016-08-06 02:39:58,160: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+ERROR 2016-08-06 02:39:58,160: 	 Error: /crab_DATA_2016/ is not a valid CRAB project directory.
+ERROR 2016-08-06 02:39:58,160: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 257, in __init__
+    self.validateOptions()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/status.py", line 749, in validateOptions
+    SubCommand.validateOptions(self)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1607.patch2/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 566, in validateOptions
+    raise ConfigurationException(msg)
+ConfigurationException: [91mError[0m: /crab_DATA_2016/ is not a valid CRAB project directory.
+DEBUG 2016-09-21 22:00:02,568: 	 Executing command: 'submit'
+DEBUG 2016-09-21 22:00:02,568: 	 Found CRAB cache file /afs/cern.ch/user/a/amodak/.crab3
+DEBUG 2016-09-21 22:00:02,574: 	 Checking credentials
+DEBUG 2016-09-21 22:00:02,574: 	 Found proxy file /tmp/x509up_u28237
+DEBUG 2016-09-21 22:00:02,574: 	 Getting proxy life time left
+DEBUG 2016-09-21 22:00:03,078: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -timeleft
+ output : 86282
+
+ error: 
+ retcode : 0
+DEBUG 2016-09-21 22:00:03,482: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u28237 -actimeleft
+ output : 86281
+
+ error: 
+ retcode : 0
+DEBUG 2016-09-21 22:00:03,482: 	 Proxy valid for 23:58:02 hours
+INFO 2016-09-21 22:00:03,482: 	 Will use CRAB configuration file crabConfig_Run2_MC_analysis.py
+DEBUG 2016-09-21 22:00:03,482: 	 Loading CRAB configuration file.
+ERROR 2016-09-21 22:00:03,484: 	 Error while loading CRAB configuration:
+EOL while scanning string literal (crabConfig_Run2_MC_analysis.py, line 4)
+Please refer to https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3CommonErrors#Syntax_error_in_CRAB_configurati
+See the ./crab.log file for more details.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
+ERROR 2016-09-21 22:00:03,485: 	 Caught exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1608/bin/crab", line 160, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1608/bin/crab", line 146, in __call__
+    self.cmd = sub_cmd(self.logger, args[1:])
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1608/lib/python2.7/site-packages/CRABClient/Commands/submit.py", line 34, in __init__
+    SubCommand.__init__(self, logger, cmdargs, disable_interspersed_args=True)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1608/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 298, in __init__
+    self.loadConfig(self.options.config, self.args)
+  File "/cvmfs/cms.cern.ch/crab3/slc6_amd64_gcc493/cms/crabclient/3.3.1608/lib/python2.7/site-packages/CRABClient/Commands/SubCommand.py", line 84, in loadConfig
+    raise ConfigurationException(configmsg)
+ConfigurationException: Error while loading CRAB configuration:
+EOL while scanning string literal (crabConfig_Run2_MC_analysis.py, line 4)
+Please refer to https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3CommonErrors#Syntax_error_in_CRAB_configurati
+See the ./crab.log file for more details.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile

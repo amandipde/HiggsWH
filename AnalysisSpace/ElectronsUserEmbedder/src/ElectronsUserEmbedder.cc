@@ -142,6 +142,7 @@ ElectronsUserEmbedder::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
   edm::Handle<edm::View<reco::GsfElectron>> MVAIDelectrons;
   iEvent.getByToken(electronTokenMVAId_, MVAIDelectrons);
 
+
   //Get MVA ID WP
   edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
   edm::Handle<edm::ValueMap<bool> > tight_id_decisions; 

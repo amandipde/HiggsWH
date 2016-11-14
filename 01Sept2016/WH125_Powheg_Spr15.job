@@ -1,0 +1,55 @@
+START
+dataType mc
+readTrk  0
+readTrigObject 0
+readMVA 0
+readMVAFK 0
+MVAdisFile TMVAClassification_MLP.weights.xml
+MVAFKdisFile WH_BDT8.weights.xml
+createMVATree 0
+puHistFile reweightFunctionFall12.root
+useTrueNInt 0
+logOption 0
+maxEvent  -1
+histFile  /lustre/home/amodak/AnalysisOutput/WH125_miniAODv2_eff.root
+logFile   /lustre/home/amodak/AnalysisOutput/WH125_miniAODv2_eff.out
+eventFile /lustre/home/amodak/AnalysisOutput/WH125_miniAODv2_events.out
+mvaInputFile /lustre/home/amodak/AnalysisOutput/WH125_miniAODv2_mva.root
+vtxCutList ndf=7 dxy=2 z=24
+muonCutList eta=2.1 pt=22 nChambers=2 nMatches=2 nMatchedStations=2
+muonCutList pixHits=1 trkHits=8 globalChi2=10.0 trkD0=0.02 dB=0.02 vtxDistZ=0.2 dz=0.2 pfRelIso=0.1
+electronCutList pt=10.0 eta=2.5 missingHits=1 dB=0.02 dz=0.2
+electronCutList etaLow=1.4442 etaUp=1.566 scEtaLow=1.4442 scEtaUp=1.566 eleId=7
+tauCutList eta=2.3 pt=10 dz=0.2 muVeto=0.5 eleVeto=0.5
+bjetCutList eta=2.4 pt=20 useTCHE=0 TCHECut=3.3 CSVCut=0.898
+evselCutList ptMuon=24 drMuTau=0.1 drTauTau=0.1 ptTau1=25 ptTau2=20 muVetoPt=15
+evselCutList dzMuTauVtx=0.14 dzTauTauVtx=0.14 dzEleTauVtx=0.14 muTauMass=80 tauPairPt=50
+tau1CutList drMuTau=0.1 eta=2.3 pt=25 dz=0.2
+tau2CutList drMuTau=0.1 drTauTau=0.1 eta=2.3 pt=20 dz=0.2
+useTrigger 1
+trigPathList HLT_IsoMu20
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_1.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_10.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_11.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_12.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_2.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_3.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_4.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_5.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_6.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_7.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_8.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WplusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WplusH_Pow_125/151020_121526/0000/WplusH_Pow_125_25ns_MiniAODv2_9.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_1.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_10.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_11.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_12.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_2.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_3.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_4.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_5.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_6.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_7.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_8.root
+inputFile /lustre/cms/store/user/amodak/RUN2/MiniAOD/MC/CRAB/WminusHToTauTau_M125_13TeV_powheg_pythia8/crab_CRAB3_MinAODv2_25ns_WminusH_Pow_125/151020_122751/0000/WminusH_Pow_125_25ns_MiniAODv2_9.root
+END

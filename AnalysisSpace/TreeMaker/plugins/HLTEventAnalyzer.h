@@ -5,6 +5,7 @@
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 
@@ -29,6 +30,7 @@ private:
   edm::Handle<edm::TriggerResults>   triggerResultsHandle_;
   edm::Handle<trigger::TriggerEvent> triggerEventHandle_;
   HLTConfigProvider hltConfig_;
+  HLTPrescaleProvider hltPrescaleProvider_;
 
   edm::EDGetTokenT<edm::TriggerResults> _srcTriggerResultsToken;
   edm::EDGetTokenT<trigger::TriggerEvent> _srcTriggerEventToken;

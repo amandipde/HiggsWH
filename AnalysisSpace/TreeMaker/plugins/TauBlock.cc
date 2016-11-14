@@ -172,7 +172,7 @@ void TauBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
       // tau id. discriminators
       tau.decayModeFinding = v.tauID("decayModeFinding");
       tau.decayModeFindingNewDMs = v.tauID("decayModeFindingNewDMs");
-//      tau.decayModeFindingOldDMs = v.tauID("decayModeFindingOldDMs");
+      //tau.decayModeFindingOldDMs = v.tauID("decayModeFindingOldDMs");
 
       // discriminators against muons
       //tau.againstMuonLoose  = v.tauID("againstMuonLoose");
@@ -187,15 +187,23 @@ void TauBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
       //tau.againstElectronMedium = v.tauID("againstElectronMedium");
       //tau.againstElectronTight  = v.tauID("againstElectronTight");
 
-      tau.againstElectronLooseMVA5  = v.tauID("againstElectronLooseMVA5");
-      tau.againstElectronMediumMVA5 = v.tauID("againstElectronMediumMVA5");
-      tau.againstElectronTightMVA5  = v.tauID("againstElectronTightMVA5");
+      tau.againstElectronVLooseMVA6  = v.tauID("againstElectronVLooseMVA6");
+      tau.againstElectronLooseMVA6  = v.tauID("againstElectronLooseMVA6");
+      tau.againstElectronMediumMVA6 = v.tauID("againstElectronMediumMVA6");
+      tau.againstElectronTightMVA6  = v.tauID("againstElectronTightMVA6");
+      tau.againstElectronVTightMVA6  = v.tauID("againstElectronVTightMVA6");
 
       // DB Corrected Isolation
       tau.byLooseCombinedIsolationDeltaBetaCorr3Hits  = v.tauID("byLooseCombinedIsolationDeltaBetaCorr3Hits");
       tau.byMediumCombinedIsolationDeltaBetaCorr3Hits = v.tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits");
       tau.byTightCombinedIsolationDeltaBetaCorr3Hits  = v.tauID("byTightCombinedIsolationDeltaBetaCorr3Hits");
       tau.byCombinedIsolationDeltaBetaCorrRaw3Hits    = v.tauID("byCombinedIsolationDeltaBetaCorrRaw3Hits");
+
+      tau.byVLooseIsolationMVArun2v1DBoldDMwLT        = v.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT");
+      tau.byLooseIsolationMVArun2v1DBoldDMwLT        = v.tauID("byLooseIsolationMVArun2v1DBoldDMwLT");
+      tau.byMediumIsolationMVArun2v1DBoldDMwLT        = v.tauID("byMediumIsolationMVArun2v1DBoldDMwLT");
+      tau.byTightIsolationMVArun2v1DBoldDMwLT        = v.tauID("byTightIsolationMVArun2v1DBoldDMwLT");
+      tau.byVTightIsolationMVArun2v1DBoldDMwLT        = v.tauID("byVTightIsolationMVArun2v1DBoldDMwLT");
 
       // Isolation variables suggested by Christian
       tau.chargedIsoPtSum = v.tauID("chargedIsoPtSum");

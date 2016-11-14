@@ -82,6 +82,7 @@ void EventBlock::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup
   edm::Handle<L1GlobalTriggerReadoutRecord> l1GtReadoutRecord;
   bool found = iEvent.getByToken(l1Token_, l1GtReadoutRecord);
 
+/*
   // Technical Trigger Part
   if (found && l1GtReadoutRecord.isValid()) {
     edm::LogInfo("EventBlock") << "Successfully obtained L1GlobalTriggerReadoutRecord for label: "
@@ -110,7 +111,7 @@ void EventBlock::analyze(edm::Event const& iEvent, edm::EventSetup const& iSetup
     edm::LogError("EventBlock") << "Failed to get L1GlobalTriggerReadoutRecord for label: "
                                 << l1Tag_;
   }
-
+*/
   // Good Primary Vertex Part
   edm::Handle<reco::VertexCollection> primaryVertices;
   found = iEvent.getByToken(vertexToken_, primaryVertices);

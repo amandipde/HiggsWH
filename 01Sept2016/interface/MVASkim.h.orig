@@ -1,0 +1,42 @@
+#ifndef __MVASkim__h
+#define __MVASkim__h
+
+#include <fstream>
+#include <string>
+
+class TTree;
+class TFile;
+
+typedef struct  
+{
+  float muEta;
+  float muPt;
+  float tau1Eta;
+  float tau1Pt;
+  float tau2Eta;
+  float tau2Pt;
+  float diTauEta;
+  float diTauPt;
+  float dphiMuTau1;
+  float met;
+  float alpha;
+  float acop;
+  float dphiMuDiTau;
+} TreeVariables;
+
+class MVASkim {
+    
+public:
+
+  MVASkim(const std::string& filename);
+  virtual ~MVASkim();
+
+  void fill(const TreeVariables& varList);
+  void close();
+
+  TFile* _mvaFile;
+  TTree* _tree;
+
+  TreeVariables _varList;
+};
+#endif

@@ -1,0 +1,14 @@
+#!/bin/sh
+export X509_USER_PROXY=/cmshome/amodak/.globus/x509up_u50836
+voms-proxy-info -all
+uname -a
+curr_dir=`pwd`
+ANAL_DIR=/cmshome/amodak/prod/CMSSW_7_0_6_patch1/src/RecoTauTag/RecoTau/test/DYJets
+cd $ANAL_DIR
+source  /cvmfs/cms.cern.ch/cmsset_default.sh
+eval `scram runtime -sh`
+echo $ROOTSYS
+cd $curr_dir
+OUT_DIR=/lustre/cms/store/user/amodak/MTT/CSA14/DYJets_70X_40PU
+cmsRun $ANAL_DIR/JOB_NAME > $OUT_DIR/log/LOG_NAME 2>&1
+mv  OUTPUT_FILE $OUT_DIR/.

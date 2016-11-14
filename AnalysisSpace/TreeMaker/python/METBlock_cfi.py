@@ -6,5 +6,5 @@ metBlock = cms.EDAnalyzer('METBlock',
   corrmetSrc = cms.untracked.InputTag('slimmedMETsNoHF'), #noHF met temporarily
   #corrmetSrc = cms.untracked.InputTag('patMETsTypeIcorrected'),
   puppimetSrc = cms.untracked.InputTag('slimmedMETsPuppi'),
-  mvametSrc = cms.untracked.InputTag('pfMVAMEt')
+  #mvametSrc = cms.untracked.InputTag('pfMVAMEt')
 )

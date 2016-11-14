@@ -16,6 +16,8 @@
 namespace vhtm {
   class Event;
 }
+
+//class EventBlock : public edm::one::EDAnalyzer<edm::one::SharedResources>
 class EventBlock : public edm::EDAnalyzer
 {
 private:
