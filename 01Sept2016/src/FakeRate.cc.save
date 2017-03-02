@@ -703,8 +703,7 @@ void FakeRate::selectTau()
     if ((fabs(tau.eta) >= AnaUtil::cutValue(_tau1CutMap, "eta")) ||
         (tau.decayModeFinding <= 0.9) ||
         (tau.againstMuonTight3 <= 0.5) ||
-        (tau.againstElectronTightMVA6 <= 0.5) ||
-        (tau.byVLooseIsolationMVArun2v1DBoldDMwLT <= 0.5)
+        (tau.againstElectronTightMVA6 <= 0.5) 
        ) continue; 
 
     selectTauList.push_back(tau);
@@ -939,26 +938,26 @@ void FakeRate::JetToFakeDYJets()
     //if (mass1 >= 20) continue;                                                                          // To Remove WZ Contamination
     if (fabs(fake.eta) < 0.8) { 
       AnaUtil::fillHist1D("faketaupt_deno_DYC", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_DYC", fake.pt, puevWt_);
     }
     if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) { 
       AnaUtil::fillHist1D("faketaupt_deno_DYI", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_DYI", fake.pt, puevWt_);
     }
     if (fabs(fake.eta) >= 1.6) { 
       AnaUtil::fillHist1D("faketaupt_deno_DYF", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_DYF", fake.pt, puevWt_);
     }
     if (fabs(fake.eta) <= 2.3) {
       closureCountDY += 1.0; 
       AnaUtil::fillHist1D("faketaupt_deno_DYAll", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_DYAll", fake.pt, puevWt_);
       if (closureCountDY == 1.0){
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5) AnaUtil::fillHist1D("faketaupt_Isolated_DYAll", fake.pt, puevWt_);
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5) AnaUtil::fillHist1D("faketaupt_Isolated_DYAll", fake.pt, puevWt_);
         else AnaUtil::fillHist1D("faketaupt_AntiIsolated_DYAll", fake.pt, puevWt_);
       }
     }
@@ -1061,28 +1060,25 @@ void FakeRate::JetToTauFakeWJets()
       const Tau& fake = tau1list.at(indx);
       if (fabs(fake.eta) < 0.8) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsC_SSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsC_SSSS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsI_SSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsI_SSSS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsF_SSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsF_SSSS", fake.pt, puevWt_);
       }
       if (fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsAll_SSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5){
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsAll_SSSS", fake.pt, puevWt_);
-          AnaUtil::fillHist1D("faketaupt_Isolated_WJetsAll", fake.pt, puevWt_);
-        }
-        else AnaUtil::fillHist1D("faketaupt_AntiIsolated_WJetsAll", fake.pt, puevWt_);
       }
     }
   }
@@ -1094,24 +1090,24 @@ void FakeRate::JetToTauFakeWJets()
       if ((muo1.charge + fake.charge) == 0) continue; //Ensure W to SS 
       if (fabs(fake.eta) < 0.8) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsC_OSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsC_OSSS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsI_OSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsI_OSSS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsF_OSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsF_OSSS", fake.pt, puevWt_);
       }
       if (fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsAll_OSSS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsAll_OSSS", fake.pt, puevWt_);
       }
     }
@@ -1123,24 +1119,24 @@ void FakeRate::JetToTauFakeWJets()
       const Tau& fake = tau1list.at(indx);
       if (fabs(fake.eta) < 0.8) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsC_SSOS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsC_SSOS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsI_SSOS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsI_SSOS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsF_SSOS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsF_SSOS", fake.pt, puevWt_);
       }
       if (fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsAll_SSOS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsAll_SSOS", fake.pt, puevWt_);
       }
     }
@@ -1152,31 +1148,31 @@ void FakeRate::JetToTauFakeWJets()
       const Tau& fake = tau1list.at(indx);
       if (fabs(fake.eta) < 0.8) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsC_NoW", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsC_NoW", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsI_NoW", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsI_NoW", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsF_NoW", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsF_NoW", fake.pt, puevWt_);
       }
       if (fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_WJetsAll_NoW", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_WJetsAll_NoW", fake.pt, puevWt_);
       }
     }
   }
 
   //W and TauTau charge correlation
-  if ((ta1.charge != ta2.charge) && ta1.byTightIsolationMVArun2v1DBoldDMwLT < 0.5 && ta2.byTightIsolationMVArun2v1DBoldDMwLT < 0.5) { 
+  if ((ta1.charge != ta2.charge) && ta1.byTightCombinedIsolationDeltaBetaCorr3Hits < 0.5 && ta2.byTightCombinedIsolationDeltaBetaCorr3Hits < 0.5) { 
        if (muo1.charge == ta1.charge)
          AnaUtil::fillHist1D("faketaupt_antianti_WJetsOSS", ta1.pt, puevWt_);
        else if (muo1.charge == ta2.charge)
@@ -1184,8 +1180,8 @@ void FakeRate::JetToTauFakeWJets()
   }
   if ((ta1.charge == ta2.charge) && (muo1.charge == ta1.charge) && 
   //if ((ta1.charge == ta2.charge) && 
-      ta1.byTightIsolationMVArun2v1DBoldDMwLT < 0.5 && 
-      ta2.byTightIsolationMVArun2v1DBoldDMwLT < 0.5) { 
+      ta1.byTightCombinedIsolationDeltaBetaCorr3Hits < 0.5 && 
+      ta2.byTightCombinedIsolationDeltaBetaCorr3Hits < 0.5) { 
         AnaUtil::fillHist1D("faketaupt_antianti_WJetsSSS", ta1.pt, puevWt_);
         AnaUtil::fillHist1D("faketaupt_antianti_WJetsSSS", ta2.pt, puevWt_);
   }
@@ -1250,7 +1246,7 @@ void FakeRate::JetToTauFakeTTJets_2j()
     T1.SetPtEtaPhiE(sig.pt, sig.eta, sig.phi, sig.energy);
     double dr1 = AnaUtil::deltaR(M1, T1);
     if (dr1 < AnaUtil::cutValue(_tau1CutMap, "drMuTau")) continue;
-    if (sig.byTightIsolationMVArun2v1DBoldDMwLT < 0.5) continue;
+    if (sig.byTightCombinedIsolationDeltaBetaCorr3Hits < 0.5) continue;
     if ((muo1.charge + sig.charge) != 0) continue;
     taulist.push_back(sig);
   } 
@@ -1272,23 +1268,23 @@ void FakeRate::JetToTauFakeTTJets_2j()
 
   if (fabs(fake.eta) < 0.8) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsC_2j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsC_2j", fake.pt, puevWt_);
   }
   if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsI_2j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsI_2j", fake.pt, puevWt_);
   }
 
   if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsF_2j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsF_2j", fake.pt, puevWt_);
   }
   if (fabs(fake.eta) < 2.3) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsAll_2j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsAll_2j", fake.pt, puevWt_);
   }
 }
@@ -1363,23 +1359,23 @@ void FakeRate::JetToTauFakeTTJets_2j_ss()
     const Tau& fake = tau1list.at(indx);
     if (fabs(fake.eta) < 0.8) {
       AnaUtil::fillHist1D("faketaupt_deno_TTJetsC_2j_ss", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_TTJetsC_2j_ss", fake.pt, puevWt_);
     }
     if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
       AnaUtil::fillHist1D("faketaupt_deno_TTJetsI_2j_ss", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_TTJetsI_2j_ss", fake.pt, puevWt_);
     }
 
     if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
       AnaUtil::fillHist1D("faketaupt_deno_TTJetsF_2j_ss", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_TTJetsF_2j_ss", fake.pt, puevWt_);
     }
     if (fabs(fake.eta) < 2.3) {
       AnaUtil::fillHist1D("faketaupt_deno_TTJetsAll_2j_ss", fake.pt, puevWt_);
-      if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+      if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
         AnaUtil::fillHist1D("faketaupt_nume_TTJetsAll_2j_ss", fake.pt, puevWt_);
     }
   }
@@ -1456,23 +1452,23 @@ void FakeRate::JetToTauFakeTTJets_1j()
 
   if (fabs(fake.eta) < 0.8) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsC_1j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsC_1j", fake.pt, puevWt_);
   }
   if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsI_1j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsI_1j", fake.pt, puevWt_);
   }
 
   if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsF_1j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsF_1j", fake.pt, puevWt_);
   }
   if (fabs(fake.eta) < 2.3) {
     AnaUtil::fillHist1D("faketaupt_deno_TTJetsAll_1j", fake.pt, puevWt_);
-    if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+    if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
       AnaUtil::fillHist1D("faketaupt_nume_TTJetsAll_1j", fake.pt, puevWt_);
   }
 }
@@ -1546,24 +1542,24 @@ void FakeRate::JetToTauFakeQCD()
       const Tau& fake = tau1list.at(indx);
       if (fabs(fake.eta) < 0.8) {
         AnaUtil::fillHist1D("faketaupt_deno_QCDC_SS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_QCDC_SS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 0.8 && fabs(fake.eta) < 1.6) {
         AnaUtil::fillHist1D("faketaupt_deno_QCDI_SS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_QCDI_SS", fake.pt, puevWt_);
       }
 
       if (fabs(fake.eta) >= 1.6 && fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_QCDF_SS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_QCDF_SS", fake.pt, puevWt_);
       }
       if (fabs(fake.eta) < 2.3) {
         AnaUtil::fillHist1D("faketaupt_deno_QCDAll_SS", fake.pt, puevWt_);
-        if (fake.byTightIsolationMVArun2v1DBoldDMwLT > 0.5)
+        if (fake.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5)
           AnaUtil::fillHist1D("faketaupt_nume_QCDAll_SS", fake.pt, puevWt_);
       }
     }
@@ -1575,43 +1571,20 @@ void FakeRate::ApplyFR()
   if (nmuon() < 1) return;
   double vz = vtxList.at(0).z;
 
-/*
-  // atleast 1 good muon
-  if (muoList.size() < 1) return;
-*/
-  //To x-check whether the discrepancy was really coming from muon
   vector<Muon> fMuoList;
   for (auto it = muonColl()->begin(); it != muonColl()->end(); ++it) {
     const Muon& muon = (*it);
 
     if (muon.pt <= AnaUtil::cutValue(muonCutMap(), "pt")
       || fabs(muon.eta) >= AnaUtil::cutValue(muonCutMap(), "eta")) continue;
-#if 0
-    if (!muon.isTrackerMuon || !muon.isGlobalMuonPromptTight) continue;
-    if (muon.nMatchedStations < AnaUtil::cutValue(muonCutMap(), "nMatchedStations")) continue;
-    if (muon.nMatches < AnaUtil::cutValue(muonCutMap(), "nMatches") ||
-        muon.nChambers < AnaUtil::cutValue(muonCutMap(), "nChambers")) continue;
-    if (muon.trkHits <= AnaUtil::cutValue(muonCutMap(),"trkHits")) continue;
-    if (muon.pixHits < AnaUtil::cutValue(muonCutMap(),"pixHits")) continue;
-    if (muon.globalChi2 >= AnaUtil::cutValue(muonCutMap(),"globalChi2")) continue;
-    if (abs(muon.trkD0) >= AnaUtil::cutValue(muonCutMap(),"trkD0")) continue;
-    //if (abs(muon.vtxDistZ) >= AnaUtil::cutValue(muonCutMap(), "vtxDistZ")) continue;
-    bool isGoodVtx;
-    TVector3 vmu = findLeptonVtx(muon.vtxIndex, isGoodVtx);
-    double dz = vmu.z() - vz;
-    if (!isGoodVtx || abs(dz) >= AnaUtil::cutValue(muonCutMap(), "dz")) continue;
-#endif
-    if (!muon.isTightMuon) continue;
-    //if (!muon.isMediumMuon) continue;
-    //if (fabs(muon.chargedHadronIso/muon.pt) >= AnaUtil::cutValue(muonCutMap(), "pfRelIso")) continue;
+
+    if (!muon.isMediumMuon) continue;
     if (fabs(muon.pfRelIsoDB03) >= AnaUtil::cutValue(muonCutMap(), "pfRelIso")) continue;
     fMuoList.push_back(muon);
   }
 
   // atleast 1 good muon
   if (fMuoList.size() < 1) return;
-
-  AnaUtil::fillHist1D("test", 2.0, puevWt_);    
 
   const Muon& muo = fMuoList.at(0);
   TLorentzVector M1,T;
@@ -1630,147 +1603,115 @@ void FakeRate::ApplyFR()
                      tau.pt > AnaUtil::cutValue(_tau2CutMap, "pt") &&
                      (tau.charge + muo.charge) == 0;
 
-    if (decision1) tauOSList.push_back(tau);
-    //if (decision1 &&  tau.byTightIsolationMVArun2v1DBoldDMwLT > 0.5) tau1List.push_back(tau);
+    if (decision1){
+      if (tau.byMediumCombinedIsolationDeltaBetaCorr3Hits > 0.5){
+        tau1List.push_back(tau);
+        break;
+      }
+      else antitau1List.push_back(tau);
+    }
+  }
+  if (!(tau1List.size() > 0 || antitau1List.size() > 0)) return; //Need one of the collections to be present
+
+  TLorentzVector T_Temp;
+  if (tau1List.size()){
+    const Tau& t1 = tau1List.at(0);
+    T_Temp.SetPtEtaPhiE (t1.pt, t1.eta, t1.phi, t1.energy);
+  }
+  else{
+    const Tau& ant1 = antitau1List.at(0);
+    T_Temp.SetPtEtaPhiE (ant1.pt, ant1.eta, ant1.phi, ant1.energy);
   }
 
   for (unsigned int indx = 0; indx < selectTauList.size(); ++indx) {
     const Tau& tau = selectTauList[indx];
     T.SetPtEtaPhiE(tau.pt, tau.eta, tau.phi, tau.energy);
     double dr1 = AnaUtil::deltaR(M1, T);
+    double dr2 = AnaUtil::deltaR(T_Temp, T);
     double vtxdz = fabs(tau.zvertex - vz);
 
     bool decision2 = dr1 >= AnaUtil::cutValue(_tau2CutMap, "drMuTau") &&
-                   tau.pt > AnaUtil::cutValue(_tau2CutMap, "pt") &&
-                   vtxdz < AnaUtil::cutValue(_tau2CutMap, "dz") &&
+                     dr2 >= AnaUtil::cutValue(_tau2CutMap, "drTauTau") &&
+                     tau.pt > AnaUtil::cutValue(_tau2CutMap, "pt") &&
+                     vtxdz < AnaUtil::cutValue(_tau2CutMap, "dz") &&
       //tau.againstElectronMediumMVA6 >= 0.5 &&
-                   (tau.charge + muo.charge) != 0;
+                     (tau.charge + muo.charge) != 0;
 
-    if (decision2) tauSSList.push_back(tau);
-    //if (decision2 && tau.byTightIsolationMVArun2v1DBoldDMwLT > 0.5) tau2List.push_back(tau);
+    if (decision2){
+      if (tau.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5){
+        tau2List.push_back(tau);
+        break;
+      }
+      else antitau2List.push_back(tau);
+    }
   }
-
-
-  if (tauOSList.size() < 1 || tauSSList.size() < 1) return;    //No GOOD Tau1 and antiTau1, so cancel the event
-  if (tauOSList[0].pt <= AnaUtil::cutValue(_tau1CutMap, "pt") && tauSSList[0].pt <= AnaUtil::cutValue(_tau1CutMap, "pt")) return;
+  if (!(tau2List.size() > 0 || antitau2List.size() > 0)) return; //Need one of the collections to be present
 
 
   for (unsigned int indx = 0; indx < tauOSList.size(); ++indx) {
     const Tau& tau = tauOSList[indx];
 
-    if (tau.byMediumIsolationMVArun2v1DBoldDMwLT > 0.5) tau1List.push_back(tau);
+    if (tau.byMediumCombinedIsolationDeltaBetaCorr3Hits > 0.5) tau1List.push_back(tau);
     else antitau1List.push_back(tau);
   }
   for (unsigned int indx = 0; indx < tauSSList.size(); ++indx) {
     const Tau& tau = tauSSList[indx];
 
-    if (tau.byTightIsolationMVArun2v1DBoldDMwLT > 0.5) tau2List.push_back(tau);
+    if (tau.byTightCombinedIsolationDeltaBetaCorr3Hits > 0.5) tau2List.push_back(tau);
     else antitau2List.push_back(tau);
   }
 
-  int tau1_indx, tau2_indx;
-  double tauazvtx, taubzvtx;
-  TLorentzVector T1, T2;
-
-  double tau1charge;
-  bool foundtaupair = false;
   bool signal = false;
   if (tau1List.size() > 0 && tau2List.size() > 0) {
-    for (unsigned int indx = 0; indx < tau1List.size(); ++indx) {
-      const Tau& tau1 = tau1List[indx];
-      T1.SetPtEtaPhiE(tau1.pt, tau1.eta, tau1.phi, tau1.energy);
-      for (unsigned int jndx = 0; jndx < tau2List.size(); ++jndx) {
-        const Tau& tau2 = tau2List[jndx];
-        T2.SetPtEtaPhiE(tau2.pt, tau2.eta, tau2.phi, tau2.energy);
-        if (AnaUtil::deltaR(T1, T2) >= 0.1 && (tau1.pt > AnaUtil::cutValue(_tau1CutMap, "pt") || tau2.pt > AnaUtil::cutValue(_tau1CutMap, "pt"))) {
-          tau2_indx = jndx;
-          taubzvtx = tau2.zvertex;
-          foundtaupair = true;
-          break;
-        }
-      }
-      if (foundtaupair) { 
-        tau1_indx = indx;
-        tauazvtx = tau1.zvertex;
-        signal = true;
-        tau1charge = tau1.charge;
-        break;
-      }
-    }
+    if (std::max(tau1List.at(0).pt, tau2List.at(0).pt) > AnaUtil::cutValue(_tau1CutMap, "pt")) signal = true;
   }
 
   bool OSantiSSanti = false;
-  if (!foundtaupair && tau1List.size() < 1 && tau2List.size() < 1 && antitau1List.size() > 0 && antitau2List.size() > 0) {
-    for (unsigned int indx = 0; indx < antitau1List.size(); ++indx) {
-      const Tau& tau1 = antitau1List[indx];
-      T1.SetPtEtaPhiE(tau1.pt, tau1.eta, tau1.phi, tau1.energy);
-      for (unsigned int jndx = 0; jndx < antitau2List.size(); ++jndx) {
-        const Tau& tau2 = antitau2List[jndx];
-        T2.SetPtEtaPhiE(tau2.pt, tau2.eta, tau2.phi, tau2.energy);
-        if (AnaUtil::deltaR(T1, T2) >= 0.1 && (tau1.pt > AnaUtil::cutValue(_tau1CutMap, "pt") || tau2.pt > AnaUtil::cutValue(_tau1CutMap, "pt"))) {
-          tau2_indx = jndx;
-          taubzvtx = tau2.zvertex;
-          OSantiSSanti = true;
-          break;
-        }
-      }
-      if (OSantiSSanti) {
-        tau1_indx = indx;
-        tauazvtx = tau1.zvertex;
-        break;
-      }
-    }
+  if (!signal && antitau1List.size() > 0 && antitau2List.size() > 0) {
+    if (std::max(antitau1List.at(0).pt, antitau2List.at(0).pt) > AnaUtil::cutValue(_tau1CutMap, "pt")) OSantiSSanti = true;
   }
 
   bool OSantiCR = false;
-  if (!foundtaupair && !OSantiSSanti && tau2List.size() > 0 && antitau1List.size() > 0) {
-    for (unsigned int indx = 0; indx < antitau1List.size(); ++indx) {
-      const Tau& tau1 = antitau1List[indx];
-      T1.SetPtEtaPhiE(tau1.pt, tau1.eta, tau1.phi, tau1.energy);
-      for (unsigned int jndx = 0; jndx < tau2List.size(); ++jndx) {
-        const Tau& tau2 = tau2List[jndx];
-        T2.SetPtEtaPhiE(tau2.pt, tau2.eta, tau2.phi, tau2.energy);
-        if (AnaUtil::deltaR(T1, T2) >= 0.1 && (tau1.pt > AnaUtil::cutValue(_tau1CutMap, "pt") || tau2.pt > AnaUtil::cutValue(_tau1CutMap, "pt"))) {
-          tau2_indx = jndx;
-          taubzvtx = tau2.zvertex;
-          OSantiCR = true;
-          break;
-        }
-      }
-      if (OSantiCR) {
-        tau1_indx = indx;
-        tauazvtx = tau1.zvertex;
-        break;
-      }
-    }
+  if (!signal && !OSantiSSanti && tau2List.size() > 0 && antitau1List.size() > 0) {
+    if (std::max(antitau1List.at(0).pt, tau2List.at(0).pt) > AnaUtil::cutValue(_tau1CutMap, "pt")) OSantiCR = true;
   }
 
   bool JetToTau2Fake = false;
-  //This is the case of JetToTau2 Fake//SS
-  if (!foundtaupair && !OSantiSSanti && !OSantiCR && tau1List.size() > 0 && antitau2List.size() > 0) {
-    for (unsigned int indx = 0; indx < tau1List.size(); ++indx) {
-      const Tau& tau1 = tau1List[indx];
-      T1.SetPtEtaPhiE(tau1.pt, tau1.eta, tau1.phi, tau1.energy);
-      for (unsigned int jndx = 0; jndx < antitau2List.size(); ++jndx) {
-        const Tau& tau2 = antitau2List[jndx];
-        T2.SetPtEtaPhiE(tau2.pt, tau2.eta, tau2.phi, tau2.energy);
-        if (AnaUtil::deltaR(T1, T2) >= 0.1 && (tau1.pt > AnaUtil::cutValue(_tau1CutMap, "pt") || tau2.pt > AnaUtil::cutValue(_tau1CutMap, "pt"))) {
-          tau2_indx = jndx;
-          taubzvtx = tau2.zvertex;
-          JetToTau2Fake = true;
-          break;
-        }
-      }
-      if (JetToTau2Fake) {
-        tauazvtx = tau1.zvertex;
-        tau1_indx = indx;
-        break;
-      }
-    }    
+  if (!signal && !OSantiSSanti && !OSantiCR && tau1List.size() > 0 && antitau2List.size() > 0) {
+    if (std::max(tau1List.at(0).pt, antitau2List.at(0).pt) > AnaUtil::cutValue(_tau1CutMap, "pt")) JetToTau2Fake = true;
   }
   
 
-  //if (!signal && !JetToTau2Fake && !antiTau2 && !OSantiCR && !OSantiSSanti) return;
+  if (!signal && !JetToTau2Fake && !OSantiCR && !OSantiSSanti) return;
+
+  TLorentzVector T1, T2;
+  double tauazvtx, taubzvtx;
+  if (signal){
+    T1.SetPtEtaPhiE (tau1List.at(0).pt, tau1List.at(0).eta, tau1List.at(0).phi, tau1List.at(0).energy);
+    T2.SetPtEtaPhiE (tau2List.at(0).pt, tau2List.at(0).eta, tau2List.at(0).phi, tau2List.at(0).energy);
+    tauazvtx = tau1List.at(0).zvertex;
+    taubzvtx = tau2List.at(0).zvertex;
+  }
+  if (OSantiSSanti){
+    T1.SetPtEtaPhiE (antitau1List.at(0).pt, antitau1List.at(0).eta, antitau1List.at(0).phi, antitau1List.at(0).energy);
+    T2.SetPtEtaPhiE (antitau2List.at(0).pt, antitau2List.at(0).eta, antitau2List.at(0).phi, antitau2List.at(0).energy);
+    tauazvtx = antitau1List.at(0).zvertex;
+    taubzvtx = antitau2List.at(0).zvertex;
+  }
+  if (OSantiCR){
+    T1.SetPtEtaPhiE (antitau1List.at(0).pt, antitau1List.at(0).eta, antitau1List.at(0).phi, antitau1List.at(0).energy);
+    T2.SetPtEtaPhiE (tau2List.at(0).pt, tau2List.at(0).eta, tau2List.at(0).phi, tau2List.at(0).energy);
+    tauazvtx = antitau1List.at(0).zvertex;
+    taubzvtx = tau2List.at(0).zvertex;
+  }
+  if (JetToTau2Fake){
+    T1.SetPtEtaPhiE (tau1List.at(0).pt, tau1List.at(0).eta, tau1List.at(0).phi, tau1List.at(0).energy);
+    T2.SetPtEtaPhiE (antitau2List.at(0).pt, antitau2List.at(0).eta, antitau2List.at(0).phi, antitau2List.at(0).energy);
+    tauazvtx = tau1List.at(0).zvertex;
+    taubzvtx = antitau2List.at(0).zvertex;
+  }
+
+
   if (fabs(tauazvtx - taubzvtx) >= 0.14) return;
 
   bool isGoodVtx;
@@ -1785,10 +1726,6 @@ void FakeRate::ApplyFR()
   //---------------------------------------------
   if (vetoMuon(tauazvtx, 10, 0.14) != 1) return;
 
-  if (signal)
-    AnaUtil::fillHist1D("test", 3.0, puevWt_);    
-
-
   //---------------------------------------------
   //
   //              Electron Veto
@@ -1796,8 +1733,6 @@ void FakeRate::ApplyFR()
   //---------------------------------------------
   if (vetoElectron(tauazvtx, 15, 0.14) != 0) return;
 
-  if (signal)
-    AnaUtil::fillHist1D("test", 4.0, puevWt_);    
 
   //No b-Jet Veto
   if (bjetList.size() > 0) return;
@@ -1808,14 +1743,8 @@ void FakeRate::ApplyFR()
   const MET& mt = metColl()->at(0);
   //if (mt->met < 20) return;
 
-  if (signal)
-    AnaUtil::fillHist1D("test", 6.0, puevWt_);    
-
   double mass1 = sqrt(2*muo.pt*mt.met*(1-cos(AnaUtil::deltaPhi(muo.phi, mt.metphi))));
-  //if (mass1 <= 30) return;
-
-  if (signal)
-    AnaUtil::fillHist1D("test", 7.0, puevWt_);    
+  if (mass1 <= 30) return;
 
   TLorentzVector zMuTau, diTau;
   diTau = T1 + T2;
@@ -1855,8 +1784,6 @@ void FakeRate::ApplyFR()
 
   if (JetToTau2Fake) {
     zMuTau = T1 + M1;
-    if (mt.met < 20) return;
-    if (mass1 <= 30) return;
     if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
       if (isMC()) AnaUtil::fillHist1D("eventWeight_fakeCR_mtt", 1.0, eventWt_*puevWt_);
 
@@ -1925,8 +1852,6 @@ void FakeRate::ApplyFR()
 
   if (signal) {
     zMuTau =T1 + M1;
-    if (mt.met < 20) return;
-    if (mass1 <= 30) return;
     if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
       if (isMC()) AnaUtil::fillHist1D("eventWeight_BL_mtt", 1.0, eventWt_*puevWt_);
       AnaUtil::fillHist1D("test", 8.0, puevWt_);    
@@ -1983,7 +1908,7 @@ void FakeRate::ApplyFR()
 
   if (OSantiCR) {
     zMuTau =T1 + M1;
-    //if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
+    if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
       if (isMC()) AnaUtil::fillHist1D("eventWeight_CR_mtt", 1.0, eventWt_*puevWt_);
       AnaUtil::fillHist1D("tau1Pt_CR", T1.Pt(), puevWt_);
       AnaUtil::fillHist1D("tau1Eta_CR", T1.Eta(), puevWt_);
@@ -2008,11 +1933,11 @@ void FakeRate::ApplyFR()
       AnaUtil::fillHist2D("muEta_CR_e", M1.Eta(), T2.Eta(), puevWt_);
       AnaUtil::fillHist2D("muPhi_CR_e", M1.Phi(), T2.Eta(), puevWt_);
       AnaUtil::fillHist2D("tautauMass_CR_e", diTau.M(), T2.Eta(), puevWt_);
-      //}
+    }
   }
   if (OSantiSSanti) {
     zMuTau =T1 + M1;
-    //if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
+    if (zMuTau.M() >= 80 || diTau.Pt() >= 50) {
       if (isMC()) AnaUtil::fillHist1D("eventWeight_AA_mtt", 1.0, eventWt_*puevWt_);
       AnaUtil::fillHist3D("tau1Pt_AA_tau2fake_pe", T2.Pt(), T2.Eta(), T1.Pt(), puevWt_);
       AnaUtil::fillHist3D("tau2Pt_AA_tau2fake_pe", T2.Pt(), T2.Eta(), T2.Pt(), puevWt_);
@@ -2038,7 +1963,7 @@ void FakeRate::ApplyFR()
       AnaUtil::fillHist1D("tau2Pt_AA", T2.Pt(), puevWt_);
       AnaUtil::fillHist1D("muPt_AA", M1.Pt(), puevWt_);
       AnaUtil::fillHist1D("tautauMass_AA", diTau.M(), puevWt_);
-      //}
+    }
   }
 }
 
@@ -2371,7 +2296,7 @@ void FakeRate::MuMuTauApplyFR()
   const MET& pfmet = metColl()->at(0);
 
   const Tau& taua = fTauList.at(0);
-  bool tauIso = (taua.byMediumIsolationMVArun2v1DBoldDMwLT > 0.5);
+  bool tauIso = (taua.byMediumCombinedIsolationDeltaBetaCorr3Hits > 0.5);
 
   bool isGoodVtx;
   TVector3 vtxmu = findLeptonVtx(muo1.vtxIndex, isGoodVtx);

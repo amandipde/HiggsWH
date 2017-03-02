@@ -43,6 +43,10 @@ public:
   virtual void bookHistograms();
   void JetToFakeDYJets();
   void JetToTauFakeWJets();
+  void JetToTauFakeTTJets_2j();
+  void JetToTauFakeTTJets_2j_ss();
+  void JetToTauFakeTTJets_1j();
+  void JetToTauFakeQCD();
   void selectTau();
   void selectTightMuon();
   void selectTightElectron();

@@ -22,6 +22,7 @@
 ElectronBlock::ElectronBlock(const edm::ParameterSet& iConfig) :
   verbosity_(iConfig.getUntrackedParameter<int>("verbosity", 0)),
   bsCorr_(iConfig.getUntrackedParameter<bool>("beamSpotCorr", false)),
+  trigMode_(iConfig.getUntrackedParameter<bool>("useTrigMode", false)),
   bsTag_(iConfig.getUntrackedParameter<edm::InputTag>("offlineBeamSpot", edm::InputTag("offlineBeamSpot"))),
   vertexTag_(iConfig.getUntrackedParameter<edm::InputTag>("vertexSrc", edm::InputTag("goodOfflinePrimaryVertices"))),
   electronTag_(iConfig.getUntrackedParameter<edm::InputTag>("electronSrc", edm::InputTag("selectedPatElectrons"))),
@@ -38,7 +39,7 @@ void ElectronBlock::beginJob()
   std::string tree_name = "vhtree";
   TTree* tree = vhtm::Utility::getTree(tree_name);
   list_ = new std::vector<vhtm::Electron>();
-  tree->Branch("Electron", "std::vector<vhtm::Electron>", &list_, 32000, 2);
+  tree->Branch("Electron", "std::vector<vhtm::Electron>", &list_, 32000, -1);
   tree->Branch("nElectron", &fnElectron_, "fnElectron_/I");
 }
 void ElectronBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -89,7 +90,8 @@ void ElectronBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
         electron.trkHits = hitp.numberOfValidTrackerHits();
 
         electron.nValidHits  = tk->numberOfValidHits();
-        nMissingHits = tk->trackerExpectedHitsInner().numberOfHits();
+        //nMissingHits = tk->trackerExpectedHitsInner().numberOfHits();
+	nMissingHits = tk->hitPattern().numberOfLostHits(reco::HitPattern::MISSING_INNER_HITS);
         electron.missingHits = nMissingHits;
 
         double trkd0 = tk->d0();
@@ -164,9 +166,7 @@ void ElectronBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       reco::GsfElectron::PflowIsolationVariables pfIso = v.pfIsolationVariables();
       electron.sumChargedHadronPt = pfIso.sumChargedHadronPt;
       electron.sumPUPt = pfIso.sumPUPt;
-      float absiso = pfIso.sumChargedHadronPt + std::max(0.0, pfIso.sumNeutralHadronEt + pfIso.sumPhotonEt - 0.5 * pfIso.sumPUPt);
-      float iso = absiso/(v.p4().pt());
-      electron.pfRelIso = iso;
+      electron.pfRelIso = v.userFloat("pfRelIso");
 
       // PFlow isolation information
       electron.chargedHadronIso = v.chargedHadronIso();
@@ -254,9 +254,14 @@ void ElectronBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       std::cout << "electronID(\"eidRobustHighEnergy\")=" << v.electronID("eidRobustHighEnergy") << std::endl;
 #endif
 
-      for (const pat::Electron::IdPair& pa: v.electronIDs()) {
+      for (const pat::Electron::IdPair& pa: v.electronIDs())
 	electron.idmap[pa.first] = pa.second;
-      } 
+      
+      electron.isPassMedium_MVAIDWP90 = v.userInt("isPassMedium_MVAIDWP90"); 
+      electron.isPassTight_MVAIDWP80 = v.userInt("isPassTight_MVAIDWP80"); 
+      electron.mvaId = v.userFloat("mvaId"); 
+      electron.mvaId_def = v.userFloat("mvaId_def"); 
+
       list_->push_back(electron);
     }
     fnElectron_ = list_->size();

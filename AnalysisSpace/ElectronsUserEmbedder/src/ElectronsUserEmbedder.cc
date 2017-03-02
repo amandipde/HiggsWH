@@ -180,7 +180,7 @@ ElectronsUserEmbedder::produce(edm::Event& iEvent, const edm::EventSetup& iSetup
       userElectron.addUserInt("isPassMedium_MVAIDWP90", (int) isPassMedium);
       userElectron.addUserInt("isPassTight_MVAIDWP80", (int) isPassTight);
       userElectron.addUserFloat("mvaId", (*mvaValues)[elMVA]);
-      userElectron.addUserFloat("mvaId_def", v.userFloat("ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"));
+      //userElectron.addUserFloat("mvaId_def", v.userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurpose"));
 
       electronsUserEmbeddedColl->push_back(userElectron);
       ++i;

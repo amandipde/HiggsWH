@@ -44,7 +44,7 @@ void METBlock::beginJob()
 }
 void METBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   fillMET(iEvent, iSetup, pfList_, fnPFMET_, pfMETTag_, pfMETToken_);
-  fillMET(iEvent, iSetup, corrList_, fnCorrMET_, corrMETTag_, corrMETToken_);
+  //fillMET(iEvent, iSetup, corrList_, fnCorrMET_, corrMETTag_, corrMETToken_);
   fillMET(iEvent, iSetup, puppiList_, fnPuppiMET_, puppiMETTag_, puppiMETToken_);
   //fillMET(iEvent, iSetup, mvaList_, fnMVAMET_, mvaMETTag_, mvaMETToken_);
 }

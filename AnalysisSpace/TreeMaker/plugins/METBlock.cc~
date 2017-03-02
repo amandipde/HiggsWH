@@ -10,13 +10,13 @@
 METBlock::METBlock(const edm::ParameterSet& iConfig) :
   verbosity_(iConfig.getUntrackedParameter<int>("verbosity", 0)),
   pfMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("metSrc", edm::InputTag("patMETs"))),
-  puppiMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("puppimetSrc", edm::InputTag("patMETsTypeIcorrected"))),
   corrMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("corrmetSrc", edm::InputTag("patMETsTypeIcorrected"))),
+  puppiMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("puppimetSrc", edm::InputTag("patMETsTypeIcorrected"))),
 //  mvaMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("mvametSrc", edm::InputTag("patPFMetByMVA"))),
   mvaMETTag_(iConfig.getUntrackedParameter<edm::InputTag>("mvametSrc", edm::InputTag("pfMVAMEt"))),
   pfMETToken_(consumes<pat::METCollection>(pfMETTag_)),
-  puppiMETToken_(consumes<pat::METCollection>(puppiMETTag_)),
   corrMETToken_(consumes<pat::METCollection>(corrMETTag_)),
+  puppiMETToken_(consumes<pat::METCollection>(puppiMETTag_)),
 //  mvaMETToken_(consumes<pat::METCollection>(mvaMETTag_))
   mvaMETToken_(consumes<reco::PFMETCollection>(mvaMETTag_))
 {
@@ -30,14 +30,12 @@ void METBlock::beginJob()
   tree->Branch("MET", "std::vector<vhtm::MET>", &pfList_, 32000, -1);
   tree->Branch("nMET", &fnPFMET_, "fnPFMET_/I");
 
-#if 0
   corrList_ = new std::vector<vhtm::MET>();
-  tree->Branch("corrMET", "std::vector<vhtm::MET>", &corrList_, 32000, 2);
+  tree->Branch("corrMET", "std::vector<vhtm::MET>", &corrList_, 32000, -1);
   tree->Branch("corrnMET", &fnCorrMET_, "fnCorrMET_/I");
-#endif
 
   puppiList_ = new std::vector<vhtm::MET>();
-  tree->Branch("puppiMET", "std::vector<vhtm::MET>", &puppiList_, 32000, 2);
+  tree->Branch("puppiMET", "std::vector<vhtm::MET>", &puppiList_, 32000, -1);
   tree->Branch("puppinMET", &fnPuppiMET_, "fnPuppiMET_/I");
 
   mvaList_ = new std::vector<vhtm::MET>();
@@ -46,9 +44,9 @@ void METBlock::beginJob()
 }
 void METBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
   fillMET(iEvent, iSetup, pfList_, fnPFMET_, pfMETTag_, pfMETToken_);
-  //fillMET(iEvent, iSetup, corrList_, fnCorrMET_, corrMETTag_, corrMETToken_);
+  fillMET(iEvent, iSetup, corrList_, fnCorrMET_, corrMETTag_, corrMETToken_);
   fillMET(iEvent, iSetup, puppiList_, fnPuppiMET_, puppiMETTag_, puppiMETToken_);
-  fillMET(iEvent, iSetup, mvaList_, fnMVAMET_, mvaMETTag_, mvaMETToken_);
+  //fillMET(iEvent, iSetup, mvaList_, fnMVAMET_, mvaMETTag_, mvaMETToken_);
 }
 void METBlock::fillMET(const edm::Event& iEvent,
                        const edm::EventSetup& iSetup,
@@ -77,8 +75,8 @@ void METBlock::fillMET(const edm::Event& iEvent,
       mobj.met          = v.pt();
       mobj.metphi       = v.phi();
       mobj.sumet        = v.sumEt();
-      //mobj.metuncorr    = v.uncorrectedPt(pat::MET::uncorrALL);
-      //mobj.metphiuncorr = v.uncorrectedPhi(pat::MET::uncorrALL);
+      mobj.metuncorr    = v.uncorPt();
+      mobj.metphiuncorr = v.uncorPhi();
       //mobj.sumetuncorr  = v.sumEt() - v.corSumEt(pat::MET::uncorrALL);
 
       list->push_back(mobj);
@@ -117,8 +115,8 @@ void METBlock::fillMET(const edm::Event& iEvent,
       mobj.met          = v.pt();
       mobj.metphi       = v.phi();
       mobj.sumet        = v.sumEt();
-      //mobj.metuncorr    = v.uncorrectedPt(reco::PFMET::uncorrALL);
-      //mobj.metphiuncorr = v.uncorrectedPhi(reco::PFMET::uncorrALL);
+      //mobj.metuncorr    = v.uncorPt();
+      //mobj.metphiuncorr = v.uncorPhi();
       //mobj.sumetuncorr  = v.sumEt() - v.corSumEt(reco::PFMET::uncorrALL);
 
       list->push_back(mobj);

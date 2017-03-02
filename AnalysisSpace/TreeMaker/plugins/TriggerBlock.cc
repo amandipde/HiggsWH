@@ -24,7 +24,7 @@ TriggerBlock::TriggerBlock(const edm::ParameterSet& iConfig) :
   preScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1PreScaleInputTag", edm::InputTag("patTrigger", ""))),
   l1minpreScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1minPreScaleInputTag", edm::InputTag("patTrigger", "l1min"))),
   l1maxpreScaleTag_(iConfig.getUntrackedParameter<edm::InputTag>("l1maxPreScaleInputTag", edm::InputTag("patTrigger", "l1max"))),
-  hltTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltInputTag", edm::InputTag("TriggerResults","","HLT2"))),
+  hltTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltInputTag", edm::InputTag("TriggerResults","","HLT"))),
   hltPathsOfInterest_(iConfig.getParameter<std::vector<std::string> >("hltPathsOfInterest")),
 //  l1Token_(consumes<L1GlobalTriggerReadoutRecord>(l1Tag_)),
   preScaleToken_(consumes<pat::PackedTriggerPrescales>(preScaleTag_)),
@@ -69,6 +69,7 @@ void TriggerBlock::beginJob()
   tree->Branch("l1maxprescales", "vector<int>", &l1maxprescales_);
 }
 void TriggerBlock::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup) {
+  std::cout << "begin run" << std::endl;
   bool changed = true;
   if (hltConfig_.init(iRun, iSetup, hltTag_.process(), changed)) {
     // if init returns TRUE, initialisation has succeeded!
@@ -82,10 +83,11 @@ void TriggerBlock::beginRun(edm::Run const& iRun, edm::EventSetup const& iSetup)
                                   << hltTag_.process() << " failed";
     // In this case, all access methods will return empty values!
   }
-  bool isChanged = true;
-  hltPrescaleProvider_.init(iRun, iSetup, "HLT", isChanged);
+  //bool isChanged = true;
+  //hltPrescaleProvider_.init(iRun, iSetup, "HLT", isChanged);
 }
 void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+  std::cout << "1" << std::endl;
   // Reset the vectors
   l1physbits_->clear();
   l1techbits_->clear();
@@ -94,38 +96,24 @@ void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   hltprescales_->clear();
   l1minprescales_->clear();
   l1maxprescales_->clear();
-/*
-  edm::Handle<L1GlobalTriggerReadoutRecord> l1GtReadoutRecord;
-  bool found = iEvent.getByToken(l1Token_, l1GtReadoutRecord);
 
-  if (found && l1GtReadoutRecord.isValid()) {
-    edm::LogInfo("TriggerBlock") << "Successfully obtained L1GlobalTriggerReadoutRecord for label: "
-                                 << l1Tag_;
-    for (unsigned int i = 0; i < NmaxL1AlgoBit; ++i) {
-      l1physbits_->push_back(l1GtReadoutRecord->decisionWord()[i] ? 1 : 0);
-    }
-    for (unsigned int i = 0; i < NmaxL1TechBit; ++i) {
-      l1techbits_->push_back(l1GtReadoutRecord->technicalTriggerWord()[i] ? 1 : 0 );
-    }
-  }
-  else {
-    edm::LogError("TriggerBlock") << "Error >> Failed to get L1GlobalTriggerReadoutRecord for label: "
-                                  << l1Tag_;
-  }
-*/
   //New way of having prescale
   edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
   iEvent.getByToken(preScaleToken_, triggerPrescales);
+  std::cout << "2" << std::endl;
 
   edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesl1min;
   iEvent.getByToken(l1minpreScaleToken_, triggerPrescalesl1min);
+  std::cout << "3" << std::endl;
 
   edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesl1max;
   iEvent.getByToken(l1maxpreScaleToken_, triggerPrescalesl1max);
+  std::cout << "4" << std::endl;
 
   edm::Handle<edm::TriggerResults> triggerResults;
   bool found = iEvent.getByToken(hltToken_, triggerResults);
   if (found && triggerResults.isValid()) {
+    std::cout << "inside trigger result 1" << std::endl;
     edm::LogInfo("TriggerBlock") << "Successfully obtained " << hltTag_;
     const std::vector<std::string>& pathList = hltConfig_.triggerNames();
     for (auto path: pathList) {
@@ -156,55 +144,10 @@ void TriggerBlock::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       hltprescales_->push_back(prescale);
       l1minprescales_->push_back(prescale_l1min);
       l1maxprescales_->push_back(prescale_l1max);
-/*
-      int prescale = -1;
 
-      if (hltPrescaleProvider_.prescaleSet(iEvent, iSetup) < 0) {
-//        edm::LogError("TriggerBlock") << "The prescale set index number could not be obtained for HLT path: "
-        edm::LogInfo("TriggerBlock") << "The prescale set index number could not be obtained for HLT path: "
-                                      << path;
-      }
-      else {
-      auto a = hltPrescaleProvider_.prescaleValuesInDetail(iEvent, iSetup, path);
-      prescale = a.second;
-      }
-      hltprescales_->push_back(prescale);
-
-//      auto a = hltConfig_.prescaleValues(iEvent, iSetup, path);
-      auto a = hltPrescaleProvider_.prescaleValuesInDetail(iEvent, iSetup, path);
-*/
       if (verbosity_) {
-#if 0
-        std::cout << ">>> Path: " << (path) 
-	   	  << ", prescale: " << prescale 
-		  << ", fired: " << fired
-		  //<< ", PrescaleValues L1: " << a.first 
-                  << ", PrescaleValues HLT: " << a.second
-		  << std::endl;
-    
-        auto d = hltConfig_.moduleLabels(path);
-        for (auto v: d) {
-	  std::cout << "\tModule Labels: " << v
-		    << std::endl;
-        }
-#endif
       }    
     }      
-#if 0
-    if (verbosity_) {
-      const std::vector<std::string>& b = hltConfig_.prescaleLabels();
-      for (const std::string& v: b)
-        std::cout << "\tPrescale Labels: " << v
-                  << std::endl;
-
-      const std::map<std::string, std::vector<unsigned int> >& c = hltConfig_.prescaleTable();
-      for (auto ptr: c) {
-        std::cout << "Key  : " << ptr.first << ": " << std::endl;
-        for (auto v: ptr.second)
-	  std::cout << "value: " << v << std::endl;
-      }
-    }	 
-#endif
   } 
   else {
     edm::LogError("TriggerBlock") << "Failed to get TriggerResults for label: "

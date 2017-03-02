@@ -1,4 +1,3 @@
-
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("TreeMaker")
 #------------------------
@@ -40,7 +39,8 @@ process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 # Global Tag
 #-------------
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-process.GlobalTag.globaltag = '80X_dataRun2_Prompt_ICHEP16JEC_v0'
+#process.GlobalTag.globaltag = '80X_dataRun2_Prompt_ICHEP16JEC_v0'
+process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 
 #--------------------------------------------------
 # Analysis Tree Specific
@@ -49,20 +49,17 @@ process.load("AnalysisSpace.TreeMaker.TreeCreator_cfi")
 process.load("AnalysisSpace.TreeMaker.TreeWriter_cfi")
 process.load("AnalysisSpace.TreeMaker.TreeContentConfig_data_cff")
 
-#################################################################
-#
-# Set up electron ID (VID framework)
-#
-from RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff import *
+#################################################################                                                                                    #                                                                                                                                                    # Set up electron ID (VID framework)                                                                                                                 #                    
+from RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff import * 
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
-# turn on VID producer, indicate data format  to be
-# DataFormat.AOD or DataFormat.MiniAOD, as appropriate 
+# turn on VID producer, indicate data format  to be                                                                                                   
+# DataFormat.AOD or DataFormat.MiniAOD, as appropriate                                                                                                
 
 switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-# define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
+# define which IDs we want to produce                                                                                                                 
+my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff']
 
-#add them to the VID producer
+#add them to the VID producer                                                                                                                         
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
@@ -76,10 +73,10 @@ process.UserElectron = cms.EDProducer('ElectronsUserEmbedder',
   vertexSrc = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
   #vertexSrc = cms.untracked.InputTag('offlineSlimmedPrimaryVertices'),
   electronSrc = cms.untracked.InputTag('slimmedElectrons'),
-  eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp90"),
-  eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80"),
-  mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
-  mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Categories"),
+  eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90"),
+  eleTightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80"),
+  mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
+  mvaCategoriesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Categories"),
 )
 
 process.UserMuon = cms.EDProducer('MuonsUserEmbedder',
@@ -113,7 +110,21 @@ process.TausForMVAMet = cms.EDFilter('PATTauSelector',
         cut = cms.string("pt > 20 && abs(eta) < 2.3 && tauID('decayModeFinding') > 0.5 && tauID('againstMuonTight3') > 0.5 && tauID('againstElectronLooseMVA5') > 0.5 && tauID('chargedIsoPtSum') < 2.0"),
         filter = cms.bool(False)
 )
-
+#############################################################################
+#ReApply JEC on Data
+#############################################################################
+#Remember to change the jet collection name as 'patJetsReapplyJEC'
+from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import updatedPatJetCorrFactors
+process.patJetCorrFactorsReapplyJEC = updatedPatJetCorrFactors.clone(
+    src = cms.InputTag("slimmedJets"),
+    levels = ['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual'],
+    payload = 'AK4PFchs' ) # Make sure to choose the appropriate levels and payload here!
+from PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff import updatedPatJets
+process.patJetsReapplyJEC = updatedPatJets.clone(
+      jetSource = cms.InputTag("slimmedJets"),
+      jetCorrFactorsSource = cms.VInputTag(cms.InputTag("patJetCorrFactorsReapplyJEC"))
+      )
+#############################################################################
 process.p = cms.Path(
   process.goodOfflinePrimaryVertices*
   process.egmGsfElectronIDSequence*
@@ -122,6 +133,8 @@ process.p = cms.Path(
 #  process.ElectronsForMVAMet*
 #  process.MuonsForMVAMet*
 #  process.TausForMVAMet*
+  process.patJetCorrFactorsReapplyJEC*
+  process.patJetsReapplyJEC*
   process.treeCreator*
   process.treeContentSequence*
   process.treeWriter
@@ -131,6 +144,6 @@ process.p = cms.Path(
 # Output ROOT file
 #-------------
 process.TFileService = cms.Service("TFileService",
-   fileName = cms.string('SingleElectron_2016B_v2.root')
+   fileName = cms.string('SingleElectron_2016G_ReReco.root')
 )
 
